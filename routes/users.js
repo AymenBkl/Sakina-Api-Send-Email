@@ -11,18 +11,18 @@ router.all('/')
   .options('/',cors.corsWithOptions,function(req,res,next) {
     next();
   })
-  .post('/',cors.corsWithOptions, function (req, res, next) {
+  .post('/',cors.corsWithOptions, function (req, response, next) {
   console.log(req.body);
   const formData = 
   { 
-    "term": "netflix.com", 
+    "term": req.body.domain, 
     "maxresults": 100000, 
     "media": 0, 
     "target": 2, 
     "terminate": [null], 
     "timeout": 200 
   };
-  
+  console.log(formData);
   var headers = {
     'Content-Type':'application/json', 
     'User-Agent': fakeUa(),
@@ -35,8 +35,8 @@ router.all('/')
       console.log('here'); 
       if (err) {
         console.log(err);
-        res.statusCode = 500;
-        res.json({'err':'Error'});
+        response.statusCode = 500;
+        response.json({'err':'Error'});
       }
       else {
         request.get({
@@ -46,12 +46,12 @@ router.all('/')
             console.log('here'); 
             if (err) {
               console.log(err);
-              res.statusCode = 500;
-              res.json({'err':'Error'});
+              response.statusCode = 500;
+              response.json({'err':'Error'});
             }
             else {
-              res.statusCode = 200;
-              res.json({success:true,data:body});
+              response.statusCode = 200;
+              response.json({success:true,data:JSON.parse(body)});
             }
         });
         console.log('body',body.id);
