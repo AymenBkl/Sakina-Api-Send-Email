@@ -4,9 +4,15 @@ var router = express.Router();
 const request = require('request');
 const fakeUa = require('fake-useragent');
 
+const cors = require('./cors');
 /* GET users listing. */
 
-router.get('/', function (req, res, next) {
+router.all('/')
+  .options('/',cors.corsWithOptions,function(req,res,next) {
+    next();
+  })
+  .post('/',cors.corsWithOptions, function (req, res, next) {
+  console.log(req.body);
   const formData = 
   { 
     "term": "netflix.com", 
@@ -16,6 +22,7 @@ router.get('/', function (req, res, next) {
     "terminate": [null], 
     "timeout": 200 
   };
+  
   var headers = {
     'Content-Type':'application/json', 
     'User-Agent': fakeUa(),
@@ -28,9 +35,25 @@ router.get('/', function (req, res, next) {
       console.log('here'); 
       if (err) {
         console.log(err);
-        return err;
+        res.statusCode = 500;
+        res.json({'err':'Error'});
       }
       else {
+        request.get({
+          headers: headers,
+          url: `https://public.intelx.io/phonebook/search/result?k=c7ca2255-89d1-4b9f-bc88-97fe781dd631&id=${body.id}&limit=${formData.maxresults}`,
+        }, function (err, res, body) {
+            console.log('here'); 
+            if (err) {
+              console.log(err);
+              res.statusCode = 500;
+              res.json({'err':'Error'});
+            }
+            else {
+              res.statusCode = 200;
+              res.json({success:true,data:body});
+            }
+        });
         console.log('body',body.id);
       }
   });
