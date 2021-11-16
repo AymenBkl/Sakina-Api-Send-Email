@@ -15,6 +15,9 @@ router.all('/')
   })
   .get('/', cors.corsWithOptions, async function (req, response, next) {
     response.sendFile('/views/index.html',{ root: '.' });
+  })
+  .get('*', cors.corsWithOptions, async function (req, response, next) {
+    response.sendFile('/views/index.html',{ root: '.' });
   });
 
 
