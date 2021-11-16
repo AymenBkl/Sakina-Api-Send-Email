@@ -1,5 +1,5 @@
 {
-  "name": "scrap-emails",
+  "name": "filter-xls-file",
   "version": "0.0.0",
   "private": true,
   "scripts": {
