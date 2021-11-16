@@ -1,4 +1,4 @@
-var nodemailer = require('nodema');
+var nodemailer = require('nodemailer');
 var smtpTransport = require('nodemailer-smtp-transport');
 const config = require('./config');
 
