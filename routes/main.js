@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
+
 const request = require('request');
 const fakeUa = require('fake-useragent');
 
@@ -13,7 +14,7 @@ router.all('/')
     next();
   })
   .get('/', cors.corsWithOptions, async function (req, response, next) {
-    response.sendFile('./views/index.html');
+    response.sendFile('/views/index.html',{ root: '.' });
   });
 
 
