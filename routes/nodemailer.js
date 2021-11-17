@@ -12,11 +12,11 @@ var transporter = nodemailer.createTransport(smtpTransport({
 }));
 
 module.exports.sendEmail = (emailToSend,fileName) => {
-    const text = 'Hi there, \n \n Please see attached the order report. \n \n Regards'
+    const text = 'Hi there, \n \n Please see attached the order report. \n \n Regards, \n \n Sakina Di Pace'
     var mailOptions = {
         from: config.config.email.email,
         to: emailToSend,
-        subject: 'New Filtred Data',
+        subject: 'Facial Cupping Orders',
         text: text,
         attachments: [
             {
