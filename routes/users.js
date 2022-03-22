@@ -14,7 +14,7 @@ router.all('/')
   })
   .post('/', cors.corsWithOptions, async function (req, response, next) {
     try {
-    const fileNames = req.body.email.split('@')[0] + new Date().toISOString() +  '.xlsx';
+    const fileNames =  'New Generated File.xlsx';
     const headingColumnNames = req.body.columns;
     const rows = remoduleRows(req.body.rows, headingColumnNames);
     console.log(fileNames, rows);
@@ -36,24 +36,17 @@ router.all('/')
       rowIndex++;
     });
     wb.write(`./routes/${fileNames}`);
-    nodemailer.sendEmail(req.body.email,fileNames)
-      .then((result) => {
-        if (result && result == true){
-          response.statusCode = 200;
-          response.json({ success: true, msg: 'Email Sent Successfully' });
-        }
-        else {
-          response.statusCode = 500;
-          response.json({ success: false, msg: 'File Created But error while sending' });
-        }
-      })
-   
+    response.json({success:true,msg:`./routes/${fileNames}`});
   }
   catch(er) {
     response.statusCode = 500;
     response.json({success:false,msg:'Something Went Wrong !'});
   }
-  });
+  })
+  .get('/download',cors.corsWithOptions,async function(req,res,next)  {
+    console.log('here');
+    res.download('/routes/New Generated File.xlsx');
+  })
 
 function remoduleRows(rows, columns) {
   const newRows = [];
